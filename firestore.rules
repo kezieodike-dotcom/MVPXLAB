@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "kezieodike@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidSubmission(data) {
+      return data.fullName is string && data.fullName.size() > 0 && data.fullName.size() < 100 &&
+             data.email is string && data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") &&
+             data.ideaDescription is string && data.ideaDescription.size() > 0 && data.ideaDescription.size() < 5000 &&
+             data.problemSolved is string && data.problemSolved.size() > 0 && data.problemSolved.size() < 2000 &&
+             data.targetAudience is string && data.targetAudience.size() > 0 && data.targetAudience.size() < 1000 &&
+             data.needs in ["MVP", "Full product", "AI integration", "Not sure"] &&
+             data.projectStage in ["Idea stage", "Early prototype", "Existing product"] &&
+             (!('budget' in data) || data.budget in ["Just exploring", "Ready to build", "Funded project"]) &&
+             data.status == 'pending';
+    }
+
+    match /submissions/{submissionId} {
+      // Anyone can create a submission
+      allow create: if isValidSubmission(request.resource.data);
+      
+      // Only admins can read/update/delete submissions
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+  }
+}

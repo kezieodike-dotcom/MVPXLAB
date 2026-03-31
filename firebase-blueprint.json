@@ -1,0 +1,29 @@
+{
+  "entities": {
+    "Submission": {
+      "title": "Idea Submission",
+      "description": "A detailed idea submission from a potential partner or client.",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string", "description": "Full name of the submitter" },
+        "email": { "type": "string", "format": "email", "description": "Email address of the submitter" },
+        "company": { "type": "string", "description": "Company name (optional)" },
+        "ideaDescription": { "type": "string", "description": "Detailed description of the idea" },
+        "problemSolved": { "type": "string", "description": "The problem the idea solves" },
+        "targetAudience": { "type": "string", "description": "Who the product is for" },
+        "needs": { "type": "string", "enum": ["MVP", "Full product", "AI integration", "Not sure"], "description": "What they need help with" },
+        "projectStage": { "type": "string", "enum": ["Idea stage", "Early prototype", "Existing product"], "description": "Current stage of the project" },
+        "budget": { "type": "string", "enum": ["Just exploring", "Ready to build", "Funded project"], "description": "Budget or commitment level" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the submission was created" },
+        "status": { "type": "string", "enum": ["pending", "reviewed", "contacted"], "description": "Internal status of the submission" }
+      },
+      "required": ["fullName", "email", "ideaDescription", "problemSolved", "targetAudience", "needs", "projectStage"]
+    }
+  },
+  "firestore": {
+    "/submissions/{submissionId}": {
+      "schema": "Submission",
+      "description": "Collection of idea submissions"
+    }
+  }
+}
