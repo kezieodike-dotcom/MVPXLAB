@@ -65,7 +65,7 @@ const thirdColumn = testimonials.slice(6, 9);
 
 export const Testimonials = () => {
   return (
-    <section className="bg-white py-24 relative overflow-hidden">
+    <section className="bg-black py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -75,12 +75,12 @@ export const Testimonials = () => {
           className="flex flex-col items-center justify-center max-w-[540px] mx-auto mb-16"
         >
           <div className="flex justify-center">
-            <div className="border border-gray-200 py-1 px-4 rounded-full text-sm font-medium tracking-tight text-gray-500">
+            <div className="border border-white/10 bg-white/5 py-1 px-4 rounded-full text-sm font-medium tracking-tight text-brand-accent">
               Testimonials
             </div>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter mt-5 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tighter mt-5 text-center text-white">
             What our users say
           </h2>
           <p className="text-center mt-5 text-gray-500 text-lg">

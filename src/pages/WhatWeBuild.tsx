@@ -5,28 +5,28 @@ import { Link } from 'react-router-dom';
 export default function WhatWeBuild() {
   const capabilities = [
     {
-      icon: <Zap className="text-black" size={32} />,
+      icon: <Zap className="text-brand-accent" size={32} />,
       title: "MVPs",
       description: "Rapidly transform your core concept into a functional, market-ready product.",
       who: "Founders with early-stage ideas.",
       outcome: "A validated product ready for user feedback and investment."
     },
     {
-      icon: <Cpu className="text-black" size={32} />,
+      icon: <Cpu className="text-brand-accent" size={32} />,
       title: "AI Apps",
       description: "Integrate cutting-edge machine learning and LLMs into your business workflows.",
       who: "Organizations looking to automate and innovate with AI.",
       outcome: "Intelligent systems that enhance productivity and user experience."
     },
     {
-      icon: <Layers className="text-black" size={32} />,
+      icon: <Layers className="text-brand-accent" size={32} />,
       title: "Platforms",
       description: "Robust, scalable foundations designed for high-performance digital ecosystems.",
       who: "Startups and enterprises building multi-user platforms.",
       outcome: "A secure, high-performance platform that scales with your user base."
     },
     {
-      icon: <BarChart className="text-black" size={32} />,
+      icon: <BarChart className="text-brand-accent" size={32} />,
       title: "Scalable Systems",
       description: "Optimizing and expanding your existing systems for global impact.",
       who: "Existing products needing to handle increased load and complexity.",
@@ -90,7 +90,7 @@ export default function WhatWeBuild() {
           </p>
           <Link
             to="/submit-idea"
-            className="inline-flex bg-black text-white px-10 py-5 rounded-full text-xl font-medium hover:bg-gray-800 transition-all group"
+            className="inline-flex bg-brand-accent text-white px-10 py-5 rounded-full text-xl font-medium hover:bg-brand-accent-dark transition-all group"
           >
             Submit Your Idea
             <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={24} />

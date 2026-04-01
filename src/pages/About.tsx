@@ -42,7 +42,7 @@ export default function About() {
             <ul className="space-y-6">
               {values.map((value, index) => (
                 <li key={index} className="flex items-start space-x-4">
-                  <CheckCircle className="text-black shrink-0 mt-1" size={20} />
+                  <CheckCircle className="text-brand-accent shrink-0 mt-1" size={20} />
                   <div>
                     <h4 className="font-bold mb-1">{value.title}</h4>
                     <p className="text-gray-500 text-sm">{value.description}</p>

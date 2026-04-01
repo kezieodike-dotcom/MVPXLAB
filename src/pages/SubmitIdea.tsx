@@ -106,7 +106,7 @@ export default function SubmitIdea() {
         animate={{ opacity: 1, scale: 1 }}
         className="max-w-2xl mx-auto py-32 px-4 text-center"
       >
-        <div className="w-20 h-20 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-8">
+        <div className="w-20 h-20 bg-brand-accent text-white rounded-full flex items-center justify-center mx-auto mb-8">
           <CheckCircle size={40} />
         </div>
         <h1 className="text-4xl font-bold mb-6">Idea Submitted Successfully</h1>
@@ -115,7 +115,7 @@ export default function SubmitIdea() {
         </p>
         <button
           onClick={() => setIsSubmitted(false)}
-          className="bg-black text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-gray-800 transition-all"
+          className="bg-brand-accent text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-brand-accent-dark transition-all"
         >
           Submit Another Idea
         </button>
@@ -151,7 +151,7 @@ export default function SubmitIdea() {
                 <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Full Name</label>
                 <input
                   {...register("fullName")}
-                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all"
+                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
                   placeholder="John Doe"
                 />
                 {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
@@ -160,7 +160,7 @@ export default function SubmitIdea() {
                 <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Email</label>
                 <input
                   {...register("email")}
-                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all"
+                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
                   placeholder="john@example.com"
                 />
                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -170,7 +170,7 @@ export default function SubmitIdea() {
               <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Company (Optional)</label>
               <input
                 {...register("company")}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all"
+                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
                 placeholder="Acme Corp"
               />
             </div>
@@ -184,7 +184,7 @@ export default function SubmitIdea() {
               <textarea
                 {...register("ideaDescription")}
                 rows={5}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all"
+                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
                 placeholder="Describe your vision in detail..."
               />
               {errors.ideaDescription && <p className="text-red-500 text-xs mt-1">{errors.ideaDescription.message}</p>}
@@ -194,7 +194,7 @@ export default function SubmitIdea() {
               <textarea
                 {...register("problemSolved")}
                 rows={3}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all"
+                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
                 placeholder="What pain point are you addressing?"
               />
               {errors.problemSolved && <p className="text-red-500 text-xs mt-1">{errors.problemSolved.message}</p>}
@@ -203,7 +203,7 @@ export default function SubmitIdea() {
               <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Who is it for?</label>
               <input
                 {...register("targetAudience")}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all"
+                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
                 placeholder="Target audience or user base"
               />
               {errors.targetAudience && <p className="text-red-500 text-xs mt-1">{errors.targetAudience.message}</p>}
@@ -212,7 +212,7 @@ export default function SubmitIdea() {
               <label className="text-sm font-bold uppercase tracking-wider text-gray-400">What do you need help with?</label>
               <select
                 {...register("needs")}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all appearance-none"
+                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all appearance-none"
               >
                 <option value="MVP">MVP Development</option>
                 <option value="Full product">Full Product Build</option>
@@ -231,7 +231,7 @@ export default function SubmitIdea() {
                 <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Project Stage</label>
                 <select
                   {...register("projectStage")}
-                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all appearance-none"
+                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all appearance-none"
                 >
                   <option value="Idea stage">Idea Stage</option>
                   <option value="Early prototype">Early Prototype</option>
@@ -243,7 +243,7 @@ export default function SubmitIdea() {
                 <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Budget / Commitment</label>
                 <select
                   {...register("budget")}
-                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all appearance-none"
+                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all appearance-none"
                 >
                   <option value="Just exploring">Just Exploring</option>
                   <option value="Ready to build">Ready to Build</option>
@@ -258,7 +258,7 @@ export default function SubmitIdea() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-black text-white px-8 py-5 rounded-2xl text-xl font-bold hover:bg-gray-800 transition-all flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed group"
+            className="w-full bg-brand-accent text-white px-8 py-5 rounded-2xl text-xl font-bold hover:bg-brand-accent-dark transition-all flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed group"
           >
             {isSubmitting ? (
               <Loader2 className="animate-spin mr-2" size={24} />

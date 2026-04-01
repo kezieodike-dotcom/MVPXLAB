@@ -74,14 +74,14 @@ export default function Contact() {
           <div className="bg-white p-8 md:p-12 rounded-3xl border border-gray-100 shadow-sm">
             {isSubmitted ? (
               <div className="text-center py-12">
-                <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-brand-accent text-white rounded-full flex items-center justify-center mx-auto mb-6">
                   <Send size={32} />
                 </div>
                 <h3 className="text-2xl font-bold mb-4">Message Sent</h3>
                 <p className="text-gray-500 mb-8">We'll get back to you as soon as possible.</p>
                 <button
                   onClick={() => setIsSubmitted(false)}
-                  className="text-black font-bold underline"
+                  className="text-brand-accent font-bold underline"
                 >
                   Send another message
                 </button>
@@ -92,7 +92,7 @@ export default function Contact() {
                   <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Name</label>
                   <input
                     required
-                    className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all"
+                    className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
                     placeholder="Your Name"
                   />
                 </div>
@@ -101,7 +101,7 @@ export default function Contact() {
                   <input
                     required
                     type="email"
-                    className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all"
+                    className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -110,14 +110,14 @@ export default function Contact() {
                   <textarea
                     required
                     rows={4}
-                    className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-black transition-all"
+                    className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
                     placeholder="How can we help?"
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-black text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-gray-800 transition-all flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed group"
+                  className="w-full bg-brand-accent text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-brand-accent-dark transition-all flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed group"
                 >
                   {isSubmitting ? (
                     <Loader2 className="animate-spin mr-2" size={24} />
