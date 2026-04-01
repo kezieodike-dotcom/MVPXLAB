@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#FFA500;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#FF6B00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4500;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="orangeGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFE066;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF8C00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E63900;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Left bar - straight, extends down -->
+  <path d="M25 25 L55 25 L55 70 L48 70 L48 32 L25 32 Z" fill="url(#orangeGrad)" filter="url(#glow)"/>
+  
+  <!-- Top left diagonal -->
+  <path d="M25 25 L100 65 L100 55 L35 25 Z" fill="url(#orangeGrad)" filter="url(#glow)"/>
+  
+  <!-- Top right diagonal -->
+  <path d="M100 55 L100 65 L175 25 L165 25 L100 55 Z" fill="url(#orangeGrad2)" filter="url(#glow)"/>
+  
+  <!-- Right curved bar -->
+  <path d="M165 25 L175 25 L175 95 Q175 165 130 170 Q95 175 95 140 L105 140 Q105 160 130 158 Q155 155 155 95 L155 70 L145 70 L145 32 L165 32 Z" fill="url(#orangeGrad2)" filter="url(#glow)"/>
+  
+  <!-- Inner left bar extension -->
+  <path d="M48 32 L55 32 L55 70 L48 70 Z" fill="url(#orangeGrad)" filter="url(#glow)"/>
+  
+  <!-- Bottom connecting bar -->
+  <path d="M48 70 L55 70 L105 140 L95 140 Q60 100 48 70 Z" fill="url(#orangeGrad)" filter="url(#glow)"/>
+  
+  <!-- Right extension down -->
+  <path d="M145 32 L155 32 L155 70 L145 70 Z" fill="url(#orangeGrad2)" filter="url(#glow)"/>
+  
+  <!-- Center inner diagonal -->
+  <path d="M55 32 L100 55 L145 32 L145 40 L100 60 L55 40 Z" fill="url(#orangeGrad)" filter="url(#glow)" opacity="0.95"/>
+  
+  <!-- Bottom right extension -->
+  <path d="M95 140 L105 140 Q120 165 130 158 Q105 160 105 140 Q100 155 95 140 Z" fill="url(#orangeGrad2)" filter="url(#glow)"/>
+</svg>

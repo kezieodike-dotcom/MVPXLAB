@@ -38,9 +38,7 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           <Link to="/" className="flex items-center space-x-2 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-brand-accent to-brand-accent-dark flex items-center justify-center rounded-xl shadow-lg shadow-brand-accent/20 group-hover:scale-110 transition-transform">
-              <Zap size={20} className="text-white fill-white" />
-            </div>
+            <img src="/logo.svg" alt="MVPXLAB logo" className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 object-contain" />
             <span className="text-2xl font-bold tracking-tighter text-white">MVPXLAB</span>
           </Link>
 
