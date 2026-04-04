@@ -1,176 +1,144 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ArrowRight, Zap, Cpu, Layers, BarChart, CheckCircle, Mail, Globe, Send, Shield } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-// Pages
 import Home from './pages/Home';
 import About from './pages/About';
 import WhatWeBuild from './pages/WhatWeBuild';
 import SubmitIdea from './pages/SubmitIdea';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 
-// Utility for tailwind classes
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { Menu, X } from 'lucide-react';
 
 function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
 
-  const navLinks = [
-    { name: 'Product', path: '/what-we-build' },
-    { name: 'Campaign Goals', path: '/about' },
-    { name: 'Case Study', path: '/what-we-build' },
-    { name: 'FAQ', path: '/contact' },
-  ];
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+      if (window.scrollY > 20) setIsOpen(false);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `transition-colors duration-200 ${isActive ? 'text-brand-accent' : 'text-gray-400 hover:text-white'}`;
+
+  const mobileNavLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `block py-4 text-xl font-bold border-b border-white/5 ${isActive ? 'text-brand-accent' : 'text-white'}`;
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-xl border-b border-white/5 transition-all duration-500">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
-          <Link to="/" className="flex items-center space-x-2 group">
-            <img src="/logo.svg" alt="MVPXLAB logo" className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 object-contain" />
-            <span className="text-2xl font-bold tracking-tighter text-white">MVPXLAB</span>
-          </Link>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-10">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={cn(
-                  "text-sm font-medium transition-all hover:text-brand-accent",
-                  location.pathname === link.path ? "text-brand-accent" : "text-gray-400"
-                )}
-              >
-                {link.name}
-              </Link>
-            ))}
+    <>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled || isOpen ? 'bg-black/90 backdrop-blur-xl border-b border-white/5' : 'bg-transparent'} py-5 px-6 md:px-12 flex justify-between items-center`}>
+        <NavLink to="/" className="text-2xl font-bold text-white tracking-tighter flex items-center gap-3 relative z-[60]">
+          <img src="/logo.png" className="w-12 h-12 mix-blend-screen" alt="MVPXLAB Logo" />
+          <div className="-mt-1">
+            MVP<span className="text-brand-accent" style={{ fontFamily: "'Caveat', cursive", fontSize: '1.3em', transform: 'translateY(-1px)', display: 'inline-block' }}>X</span>LAB
           </div>
+        </NavLink>
 
-          <div className="hidden md:block">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-10 text-sm font-medium">
+          <NavLink to="/" end className={navLinkClass}>Home</NavLink>
+          <NavLink to="/about" className={navLinkClass}>About</NavLink>
+          <NavLink to="/what-we-build" className={navLinkClass}>What We Build</NavLink>
+          <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
+          <NavLink
+            to="/submit-idea"
+            className="bg-brand-accent text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-brand-accent-dark transition-all transform hover:scale-105"
+          >
+            Submit Idea
+          </NavLink>
+        </div>
+
+        {/* Mobile Toggle */}
+        <button
+          className="md:hidden text-white relative z-[60] p-2"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 bg-black z-40 transition-transform duration-500 ease-in-out md:hidden ${isOpen ? 'translate-y-0' : '-translate-y-full'}`}>
+        <div className="flex flex-col h-full justify-center px-10 space-y-2">
+          <NavLink to="/" end className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>Home</NavLink>
+          <NavLink to="/about" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>About</NavLink>
+          <NavLink to="/what-we-build" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>What We Build</NavLink>
+          <NavLink to="/contact" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>Contact</NavLink>
+          <div className="pt-8">
+            <NavLink
+              to="/submit-idea"
+              className="block w-full bg-brand-accent text-white text-center py-5 rounded-2xl text-xl font-bold"
+              onClick={() => setIsOpen(false)}
             >
-              <Link
-                to="/submit-idea"
-                className="bg-gradient-to-r from-brand-accent to-brand-accent-dark text-white px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-brand-accent/20 hover:shadow-brand-accent/40 transition-all"
-              >
-                Submit Idea
-              </Link>
-            </motion.div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-white">
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              Submit Your Idea
+            </NavLink>
           </div>
         </div>
       </div>
-
-      {/* Mobile Nav */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-20 w-full px-4 py-8 space-y-6 border-b border-white/10 bg-black/95 backdrop-blur-2xl"
-          >
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className="block text-xl font-medium text-white hover:text-brand-accent transition-colors"
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Link
-              to="/submit-idea"
-              onClick={() => setIsOpen(false)}
-              className="block bg-gradient-to-r from-brand-accent to-brand-accent-dark text-white px-5 py-4 rounded-2xl text-center font-bold text-lg shadow-xl shadow-brand-accent/20"
-            >
-              Submit Your Idea
-            </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+    </>
   );
 }
 
 function Footer() {
+  const year = new Date().getFullYear();
   return (
-    <footer className="bg-black py-32 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8">
-          <div className="md:col-span-5">
-            <Link to="/" className="flex items-center space-x-2 mb-8 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-brand-accent to-brand-accent-dark flex items-center justify-center rounded-xl shadow-lg shadow-brand-accent/20 group-hover:scale-110 transition-transform">
-                <Zap size={20} className="text-white fill-white" />
-              </div>
-              <span className="text-2xl font-bold tracking-tighter text-white">MVPXLAB</span>
-            </Link>
-            <p className="text-xl text-gray-500 max-w-sm leading-relaxed mb-12">
-              Building the next generation of digital products and scalable systems.
+    <footer className="bg-black border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+          {/* Brand */}
+          <div>
+            <NavLink to="/" className="inline-flex items-center gap-3 text-xl font-bold text-white tracking-tighter mb-4 group">
+              <img src="/logo.png" className="w-10 h-10 mix-blend-screen opacity-60 group-hover:opacity-100 transition-all" alt="MVPXLAB Logo" />
+              <div className="-mt-1">MVP<span className="text-brand-accent" style={{ fontFamily: "'Caveat', cursive", fontSize: '1.3em', transform: 'translateY(-1px)', display: 'inline-block' }}>X</span>LAB</div>
+            </NavLink>
+            <p className="text-gray-500 text-sm leading-relaxed mt-3 max-w-xs">
+              A systems innovation lab and AI-focused venture partner. Building the future of digital.
             </p>
-            <div className="flex space-x-6">
-              {[Globe, Mail, Shield].map((Icon, i) => (
-                <a key={i} href="#" className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-accent hover:text-white transition-all">
-                  <Icon size={20} />
-                </a>
-              ))}
-            </div>
           </div>
-          
-          <div className="md:col-span-2">
-            <h4 className="text-sm font-mono uppercase tracking-widest text-gray-400 mb-8">Platform</h4>
-            <ul className="space-y-4 text-lg font-medium">
-              <li><Link to="/about" className="text-gray-500 hover:text-brand-accent transition-colors">About Us</Link></li>
-              <li><Link to="/what-we-build" className="text-gray-500 hover:text-brand-accent transition-colors">What We Build</Link></li>
-              <li><Link to="/submit-idea" className="text-gray-500 hover:text-brand-accent transition-colors">Submit Idea</Link></li>
-            </ul>
-          </div>
-          
-          <div className="md:col-span-2">
-            <h4 className="text-sm font-mono uppercase tracking-widest text-gray-400 mb-8">Connect</h4>
-            <ul className="space-y-4 text-lg font-medium">
-              <li><a href="mailto:hello@mvpxlab.com" className="text-gray-500 hover:text-brand-accent transition-colors">Email</a></li>
-              <li><a href="#" className="text-gray-500 hover:text-brand-accent transition-colors">LinkedIn</a></li>
-              <li><a href="#" className="text-gray-500 hover:text-brand-accent transition-colors">Twitter</a></li>
+
+          {/* Navigation */}
+          <div>
+            <h4 className="text-white font-bold mb-4 text-sm uppercase tracking-widest">Navigation</h4>
+            <ul className="space-y-3 text-sm">
+              <li><NavLink to="/" end className="text-gray-500 hover:text-white transition-colors">Home</NavLink></li>
+              <li><NavLink to="/about" className="text-gray-500 hover:text-white transition-colors">About</NavLink></li>
+              <li><NavLink to="/what-we-build" className="text-gray-500 hover:text-white transition-colors">What We Build</NavLink></li>
+              <li><NavLink to="/contact" className="text-gray-500 hover:text-white transition-colors">Contact</NavLink></li>
+              <li><NavLink to="/submit-idea" className="text-brand-accent hover:text-brand-accent-dark transition-colors font-bold">Submit Idea →</NavLink></li>
             </ul>
           </div>
 
-          <div className="md:col-span-3">
-            <h4 className="text-sm font-mono uppercase tracking-widest text-gray-400 mb-8">Location</h4>
-            <p className="text-lg font-medium leading-relaxed text-gray-500">
-              Innovation Hub, Tech City <br />
-              London, United Kingdom
-            </p>
+          {/* Contact */}
+          <div>
+            <h4 className="text-white font-bold mb-4 text-sm uppercase tracking-widest">Contact</h4>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <a href="mailto:mvplabx@gmail.com" className="text-gray-500 hover:text-brand-accent transition-colors flex items-center gap-2">
+                  ✉ mvplabx@gmail.com
+                </a>
+              </li>
+              <li>
+                <a href="https://www.mvpxlab.com" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-brand-accent transition-colors">
+                  🌐 www.mvpxlab.com
+                </a>
+              </li>
+              <li>
+                <a href="https://maps.google.com/?q=75+Sijuwuola+Street,Okota,Lagos" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-brand-accent transition-colors leading-relaxed">
+                  📍 75 Sijuwuola Street, Okota, Lagos State.
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-        
-        <div className="mt-24 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-sm font-medium text-gray-500">
-          <p>© 2026 MVPXLAB. All rights reserved.</p>
-          <div className="flex space-x-8">
-            <a href="#" className="hover:text-brand-accent transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-brand-accent transition-colors">Terms of Service</a>
-          </div>
+
+        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-600">
+          <p>© {year} MVPXLAB. All rights reserved.</p>
+          <p className="text-gray-700">Built in Lagos, Nigeria 🇳🇬</p>
         </div>
       </div>
     </footer>
@@ -189,18 +157,17 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="min-h-screen bg-black font-sans text-white selection:bg-brand-accent selection:text-white">
+      <div className="min-h-screen bg-black text-white">
         <Navbar />
-        <main className="pt-20">
-          <AnimatePresence mode="wait">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/what-we-build" element={<WhatWeBuild />} />
-              <Route path="/submit-idea" element={<SubmitIdea />} />
-              <Route path="/contact" element={<Contact />} />
-            </Routes>
-          </AnimatePresence>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/what-we-build" element={<WhatWeBuild />} />
+            <Route path="/submit-idea" element={<SubmitIdea />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </main>
         <Footer />
       </div>

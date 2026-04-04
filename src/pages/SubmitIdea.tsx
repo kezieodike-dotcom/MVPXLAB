@@ -55,7 +55,7 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
     path
   }
   console.error('Firestore Error: ', JSON.stringify(errInfo));
-  throw new Error(JSON.stringify(errInfo));
+  return errInfo.error;
 }
 
 const submissionSchema = z.object({
@@ -68,6 +68,7 @@ const submissionSchema = z.object({
   needs: z.enum(["MVP", "Full product", "AI integration", "Not sure"]),
   projectStage: z.enum(["Idea stage", "Early prototype", "Existing product"]),
   budget: z.enum(["Just exploring", "Ready to build", "Funded project"]).optional(),
+  pitchDeckUrl: z.string().url("Must be a valid URL").optional().or(z.literal('')),
 });
 
 type SubmissionData = z.infer<typeof submissionSchema>;
@@ -93,7 +94,8 @@ export default function SubmitIdea() {
       });
       setIsSubmitted(true);
     } catch (err) {
-      handleFirestoreError(err, OperationType.WRITE, path);
+      const errorMessage = handleFirestoreError(err, OperationType.WRITE, path);
+      setError(errorMessage || "An unexpected error occurred while submitting.");
     } finally {
       setIsSubmitting(false);
     }
@@ -142,16 +144,16 @@ export default function SubmitIdea() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-12 bg-white p-8 md:p-12 rounded-3xl border border-gray-100 shadow-sm">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-12 bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative">
           {/* Basic Info */}
           <section className="space-y-8">
-            <h2 className="text-2xl font-bold border-b border-gray-100 pb-4">Basic Info</h2>
+            <h2 className="text-2xl font-bold border-b border-white/10 pb-4">Basic Info</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Full Name</label>
                 <input
                   {...register("fullName")}
-                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
                   placeholder="John Doe"
                 />
                 {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
@@ -160,7 +162,7 @@ export default function SubmitIdea() {
                 <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Email</label>
                 <input
                   {...register("email")}
-                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
                   placeholder="john@example.com"
                 />
                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -170,7 +172,7 @@ export default function SubmitIdea() {
               <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Company (Optional)</label>
               <input
                 {...register("company")}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
                 placeholder="Acme Corp"
               />
             </div>
@@ -178,13 +180,13 @@ export default function SubmitIdea() {
 
           {/* Idea Details */}
           <section className="space-y-8">
-            <h2 className="text-2xl font-bold border-b border-gray-100 pb-4">Idea Details</h2>
+            <h2 className="text-2xl font-bold border-b border-white/10 pb-4">Idea Details</h2>
             <div className="space-y-2">
               <label className="text-sm font-bold uppercase tracking-wider text-gray-400">What do you want to build?</label>
               <textarea
                 {...register("ideaDescription")}
                 rows={5}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
                 placeholder="Describe your vision in detail..."
               />
               {errors.ideaDescription && <p className="text-red-500 text-xs mt-1">{errors.ideaDescription.message}</p>}
@@ -194,7 +196,7 @@ export default function SubmitIdea() {
               <textarea
                 {...register("problemSolved")}
                 rows={3}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
                 placeholder="What pain point are you addressing?"
               />
               {errors.problemSolved && <p className="text-red-500 text-xs mt-1">{errors.problemSolved.message}</p>}
@@ -203,7 +205,7 @@ export default function SubmitIdea() {
               <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Who is it for?</label>
               <input
                 {...register("targetAudience")}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
                 placeholder="Target audience or user base"
               />
               {errors.targetAudience && <p className="text-red-500 text-xs mt-1">{errors.targetAudience.message}</p>}
@@ -212,12 +214,12 @@ export default function SubmitIdea() {
               <label className="text-sm font-bold uppercase tracking-wider text-gray-400">What do you need help with?</label>
               <select
                 {...register("needs")}
-                className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all appearance-none"
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600 appearance-none"
               >
-                <option value="MVP">MVP Development</option>
-                <option value="Full product">Full Product Build</option>
-                <option value="AI integration">AI Integration</option>
-                <option value="Not sure">Not Sure Yet</option>
+                <option value="MVP" className="bg-neutral-900 text-white">MVP Development</option>
+                <option value="Full product" className="bg-neutral-900 text-white">Full Product Build</option>
+                <option value="AI integration" className="bg-neutral-900 text-white">AI Integration</option>
+                <option value="Not sure" className="bg-neutral-900 text-white">Not Sure Yet</option>
               </select>
               {errors.needs && <p className="text-red-500 text-xs mt-1">{errors.needs.message}</p>}
             </div>
@@ -225,17 +227,17 @@ export default function SubmitIdea() {
 
           {/* Project Stage & Budget */}
           <section className="space-y-8">
-            <h2 className="text-2xl font-bold border-b border-gray-100 pb-4">Project Context</h2>
+            <h2 className="text-2xl font-bold border-b border-white/10 pb-4">Project Context</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Project Stage</label>
                 <select
                   {...register("projectStage")}
-                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all appearance-none"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600 appearance-none"
                 >
-                  <option value="Idea stage">Idea Stage</option>
-                  <option value="Early prototype">Early Prototype</option>
-                  <option value="Existing product">Existing Product</option>
+                  <option value="Idea stage" className="bg-neutral-900 text-white">Idea Stage</option>
+                  <option value="Early prototype" className="bg-neutral-900 text-white">Early Prototype</option>
+                  <option value="Existing product" className="bg-neutral-900 text-white">Existing Product</option>
                 </select>
                 {errors.projectStage && <p className="text-red-500 text-xs mt-1">{errors.projectStage.message}</p>}
               </div>
@@ -243,13 +245,28 @@ export default function SubmitIdea() {
                 <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Budget / Commitment</label>
                 <select
                   {...register("budget")}
-                  className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all appearance-none"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600 appearance-none"
                 >
-                  <option value="Just exploring">Just Exploring</option>
-                  <option value="Ready to build">Ready to Build</option>
-                  <option value="Funded project">Funded Project</option>
+                  <option value="Just exploring" className="bg-neutral-900 text-white">Just Exploring</option>
+                  <option value="Ready to build" className="bg-neutral-900 text-white">Ready to Build</option>
+                  <option value="Funded project" className="bg-neutral-900 text-white">Funded Project</option>
                 </select>
               </div>
+            </div>
+          </section>
+
+          {/* File Upload (Pitch Deck) */}
+          <section className="space-y-8">
+            <h2 className="text-2xl font-bold border-b border-white/10 pb-4">Additional Materials</h2>
+            <div className="space-y-2">
+              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Pitch Deck Link (Optional)</label>
+              <input
+                {...register("pitchDeckUrl")}
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
+                placeholder="Google Drive, Dropbox, Notion, or Figma link"
+              />
+              <p className="text-xs text-gray-500 mt-1">If you have a slide deck or extensive document, paste the public link here.</p>
+              {errors.pitchDeckUrl && <p className="text-red-500 text-xs mt-1">{errors.pitchDeckUrl.message}</p>}
             </div>
           </section>
 

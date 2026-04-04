@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { ArrowRight, Zap, Cpu, Layers, BarChart, ChevronRight, Check, Sparkles, Code, Globe, Shield, Target, TrendingUp, Users, Activity } from 'lucide-react';
+import { ArrowRight, Zap, Cpu, Layers, BarChart, ChevronRight, Check, Sparkles, Code, Globe, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -13,102 +13,57 @@ function cn(...inputs: ClassValue[]) {
 
 const StardustBackground = () => (
   <div className="absolute inset-0 -z-10 overflow-hidden bg-black">
-    {/* Deep Purple Gradients */}
-    <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-brand-accent/10 rounded-full blur-[150px] animate-pulse"></div>
-    <div className="absolute bottom-[-20%] right-[-10%] w-[70%] h-[70%] bg-brand-accent-dark/10 rounded-full blur-[150px] animate-pulse delay-1000"></div>
-    
-    {/* Central Light Ray */}
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-full bg-gradient-to-b from-brand-accent/20 via-brand-accent/5 to-transparent"></div>
-    
-    {/* Noise/Stardust Texture */}
-    <div className="absolute inset-0 stardust opacity-30"></div>
-    
-    {/* Vignette */}
-    <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black"></div>
+    {/* Animated Radial Gradients */}
+    <div className="absolute top-[-40%] left-[-20%] w-[100%] h-[100%] bg-brand-accent/15 rounded-full blur-[150px] animate-pulse"></div>
+    <div className="absolute bottom-[-40%] right-[-20%] w-[100%] h-[100%] bg-brand-accent-dark/15 rounded-full blur-[150px] animate-pulse delay-700"></div>
+
+    {/* Focal Point Glow */}
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-brand-accent/10 rounded-full blur-[200px]"></div>
+
+    {/* Central Perspective Line */}
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-full bg-gradient-to-b from-brand-accent/30 via-brand-accent/10 to-transparent"></div>
+
+    {/* Moving Particles Overlay */}
+    <div className="absolute inset-0 stardust opacity-40 animate-slow-pan"></div>
+
+    {/* Bottom Horizon Shadow */}
+    <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+
+    {/* Grain Filter for Texture */}
+    <div className="absolute inset-0 pointer-events-none opacity-[0.03] select-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
   </div>
 );
 
-const GlowingCore = () => (
-  <div className="relative w-64 h-64 md:w-80 md:h-80 mx-auto mt-20">
-    {/* Orbital Rings */}
-    <motion.div 
-      animate={{ rotate: 360 }}
-      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      className="absolute inset-0 border border-brand-accent/20 rounded-full scale-110"
-    ></motion.div>
-    <motion.div 
-      animate={{ rotate: -360 }}
-      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-      className="absolute inset-0 border border-brand-accent/10 rounded-full scale-125"
-    ></motion.div>
-    
-    {/* The Sphere */}
-    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-brand-accent to-brand-accent-dark shadow-[0_0_100px_rgba(253,151,6,0.4)] overflow-hidden">
-      {/* Grid Lines on Sphere */}
-      <div className="absolute inset-0 opacity-30 bg-[linear-gradient(to_right,#ffffff1a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1a_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-      
-      {/* Inner Glows */}
-      <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-white rounded-full blur-md animate-pulse"></div>
-      <div className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-white rounded-full blur-sm animate-pulse delay-500"></div>
-    </div>
 
-    {/* Outer Glow */}
-    <div className="absolute inset-0 rounded-full bg-brand-accent/20 blur-3xl -z-10"></div>
-  </div>
-);
+const TechMarquee = () => {
+  const items = [
+    "REACT", "NEXT.JS", "TYPESCRIPT", "TAILWIND CSS", "THREE.JS",
+    "NODE.JS", "PYTHON", "TENSORFLOW", "AWS", "SUPABASE", "GRAPHQL", "POSTGRESQL"
+  ];
 
-const DataWidget = ({ title, icon: Icon, value, position, delay }: { title: string, icon: any, value?: string, position: string, delay: number }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.9, y: 20 }}
-    animate={{ opacity: 1, scale: 1, y: 0 }}
-    transition={{ delay, duration: 0.8 }}
-    className={cn(
-      "absolute glass-accent p-4 rounded-2xl w-40 md:w-48 shadow-2xl z-20",
-      position
-    )}
-  >
-    <div className="flex items-center gap-2 mb-3">
-      <div className="w-6 h-6 rounded-lg bg-brand-accent/20 flex items-center justify-center text-brand-accent">
-        <Icon size={14} />
-      </div>
-      <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">{title}</span>
-    </div>
-    
-    {value ? (
-      <div className="space-y-2">
-        <div className="text-lg font-bold text-white font-mono">{value}</div>
-        <div className="h-12 w-full bg-brand-accent/5 rounded-lg overflow-hidden relative">
-          <motion.div 
-            initial={{ x: "-100%" }}
-            animate={{ x: "0%" }}
-            transition={{ duration: 2, delay: delay + 0.5 }}
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-brand-accent/20 to-transparent"
-          ></motion.div>
-          {/* Mock Waveform */}
-          <div className="absolute inset-0 flex items-end gap-1 px-2 pb-2">
-            {[40, 70, 50, 90, 60, 80, 45].map((h, i) => (
-              <div key={i} className="flex-1 bg-brand-accent/40 rounded-t-sm" style={{ height: `${h}%` }}></div>
-            ))}
-          </div>
+  return (
+    <div className="absolute bottom-0 left-0 w-full overflow-hidden bg-white/5 border-y border-white/10 py-5 backdrop-blur-md z-20 flex">
+      <div className="flex animate-marquee hover:[animation-play-state:paused] whitespace-nowrap">
+        <div className="flex items-center justify-around flex-shrink-0 w-full">
+          {items.map((item, i) => (
+            <div key={i} className="flex items-center mx-8 text-white/50 font-bold tracking-widest text-sm md:text-base">
+              <span className="w-2 h-2 rounded-full bg-brand-accent/50 mr-4"></span>
+              {item}
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center justify-around flex-shrink-0 w-full">
+          {items.map((item, i) => (
+            <div key={`dup-${i}`} className="flex items-center mx-8 text-white/50 font-bold tracking-widest text-sm md:text-base">
+              <span className="w-2 h-2 rounded-full bg-brand-accent/50 mr-4"></span>
+              {item}
+            </div>
+          ))}
         </div>
       </div>
-    ) : (
-      <div className="flex flex-col items-center justify-center py-4">
-        <div className="relative w-16 h-16">
-          <div className="absolute inset-0 border-2 border-brand-accent/20 rounded-full"></div>
-          <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 border-2 border-t-brand-accent rounded-full"
-          ></motion.div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Activity size={20} className="text-brand-accent animate-pulse" />
-          </div>
-        </div>
-      </div>
-    )}
-  </motion.div>
-);
+    </div>
+  );
+};
 
 export default function Home() {
   const features = [
@@ -149,7 +104,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pt-32 overflow-hidden px-4">
         <StardustBackground />
-        
+
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -162,16 +117,19 @@ export default function Home() {
               <Sparkles size={12} className="animate-pulse" />
               <span>INVITE-ONLY BETA — APPLY NOW TO CLAIM YOUR $10K-$20K CREDIT</span>
             </div>
-            
-            <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-[0.95] mb-8 text-white text-balance">
-              We Build The <br />
-              Future of Digital.
+
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[1.05] mb-8 text-white text-balance">
+              We Turn Ideas Into <br />
+              Scalable Systems.
             </h1>
-            
+
             <p className="text-lg md:text-xl text-gray-400 mb-12 leading-relaxed max-w-2xl mx-auto text-balance">
-              MVPXLAB transforms visionary ideas into high-impact digital products with robust architecture and AI-powered systems.
+              <span className="inline-flex items-center text-white/90 mr-1.5 font-bold">
+                MVP<span className="text-brand-accent transform -translate-y-[1px]" style={{ fontFamily: "'Caveat', cursive", fontSize: "1.3em" }}>X</span>LAB
+              </span>
+              builds and invests in digital products and AI-powered systems designed for real-world impact.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/submit-idea"
@@ -183,44 +141,16 @@ export default function Home() {
                 to="/what-we-build"
                 className="w-full sm:w-auto bg-white/5 backdrop-blur-md text-white border border-white/10 px-10 py-4 rounded-xl text-lg font-bold hover:bg-white/10 transition-all flex items-center justify-center"
               >
-                Explore Works
+                Build With Us
               </Link>
             </div>
           </motion.div>
 
-          {/* Visual Core & Widgets */}
-          <div className="relative mt-20 pb-40">
-            <GlowingCore />
-            
-            {/* Widgets */}
-            <DataWidget 
-              title="Targeting" 
-              icon={Target} 
-              position="top-0 -left-4 md:left-20" 
-              delay={1} 
-            />
-            <DataWidget 
-              title="Revenue" 
-              icon={TrendingUp} 
-              value="$ 16,900" 
-              position="bottom-20 -left-8 md:left-0" 
-              delay={1.2} 
-            />
-            <DataWidget 
-              title="Engagement" 
-              icon={Users} 
-              position="bottom-10 -right-8 md:right-0" 
-              delay={1.4} 
-            />
-            <DataWidget 
-              title="App Install" 
-              icon={Activity} 
-              value="94.2%" 
-              position="top-10 -right-4 md:right-20" 
-              delay={1.6} 
-            />
-          </div>
+          {/* Increased Hero Spacing to separate CTA from TechMarquee */}
+          <div className="mt-48 pb-20"></div>
         </div>
+
+        <TechMarquee />
       </section>
 
       {/* Capabilities Section */}
@@ -235,16 +165,16 @@ export default function Home() {
               View all services <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <FeatureCard 
-                key={index} 
-                icon={feature.icon} 
-                title={feature.title} 
-                description={feature.description} 
+              <FeatureCard
+                key={index}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
                 image={feature.image}
-                index={index} 
+                index={index}
               />
             ))}
           </div>
@@ -258,7 +188,7 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-bold tracking-tighter mb-6 text-white">The XLAB Process</h2>
             <p className="text-xl text-gray-500 max-w-2xl mx-auto">A streamlined methodology designed for speed, quality, and long-term success.</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { step: "01", title: "Submit your idea", desc: "Tell us what you want to build and why it matters." },
@@ -274,9 +204,9 @@ export default function Home() {
                 transition={{ delay: index * 0.1 }}
                 className="h-full"
               >
-                <GlowCard 
-                  glowColor="blue" 
-                  customSize 
+                <GlowCard
+                  glowColor="blue"
+                  customSize
                   className="h-full p-8 border-white/5 bg-white/5 hover:bg-white/[0.07] transition-colors group"
                 >
                   <div className="relative z-10">
@@ -301,7 +231,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
           <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-accent rounded-full blur-[150px]"></div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -326,7 +256,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-br from-brand-accent/20 to-brand-accent-dark/20 rounded-[3rem] p-12 md:p-24 text-center text-white relative overflow-hidden border border-white/5">
             <div className="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            
+
             <div className="relative z-10">
               <h2 className="text-4xl md:text-6xl font-bold tracking-tighter mb-8">Tell Us What You <br /> Want to Build</h2>
               <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
@@ -355,15 +285,15 @@ const FeatureCard = ({ icon: Icon, title, description, image, index }: any) => (
     transition={{ delay: index * 0.1 }}
     className="h-full"
   >
-    <GlowCard 
-      glowColor="orange" 
-      customSize 
+    <GlowCard
+      glowColor="orange"
+      customSize
       className="h-full flex flex-col border-white/5 bg-white/5 hover:bg-white/[0.07] transition-all duration-500 group overflow-hidden"
     >
       <div className="relative h-48 overflow-hidden">
-        <img 
-          src={image} 
-          alt={title} 
+        <img
+          src={image}
+          alt={title}
           className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
           referrerPolicy="no-referrer"
         />
@@ -374,13 +304,13 @@ const FeatureCard = ({ icon: Icon, title, description, image, index }: any) => (
           </div>
         </div>
       </div>
-      
+
       <div className="p-6 flex-1 flex flex-col relative z-10">
         <h3 className="text-xl font-bold mb-3 tracking-tight text-white">{title}</h3>
         <p className="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{description}</p>
-        <div className="flex items-center text-brand-accent text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors">
+        <Link to="/what-we-build" className="flex items-center w-fit text-brand-accent text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors cursor-pointer">
           Learn More <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
-        </div>
+        </Link>
       </div>
     </GlowCard>
   </motion.div>

@@ -1,0 +1,14 @@
+.magic-rings-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none; /* Let clicks pass through to UI underneath if needed, but it has click burst so we want SOME pointer events based on z-index */
+  z-index: 0;
+}
+
+.magic-rings-container canvas {
+  display: block;
+  outline: none;
+}

@@ -44,11 +44,11 @@ export default function WhatWeBuild() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-24">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-8">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-8 text-white">
             Clarify <br />
             <span className="text-gray-400">Capabilities</span>
           </h1>
-          <p className="text-xl text-gray-500 leading-relaxed">
+          <p className="text-xl text-gray-400 leading-relaxed">
             We specialize in building high-impact digital products and AI-powered systems. Our expertise spans across MVP development, AI integration, and large-scale platform architecture.
           </p>
         </div>
@@ -61,29 +61,30 @@ export default function WhatWeBuild() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white p-12 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-white/5 backdrop-blur-xl border border-white/10 p-12 rounded-3xl shadow-2xl hover:bg-white/10 hover:border-brand-accent/50 hover:shadow-brand-accent/20 transition-all duration-500"
             >
-              <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-8">
+              <div className="w-16 h-16 bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center mb-8">
                 {capability.icon}
               </div>
               <h2 className="text-3xl font-bold mb-4">{capability.title}</h2>
               <p className="text-gray-500 text-lg leading-relaxed mb-8">{capability.description}</p>
               
-              <div className="space-y-6 pt-8 border-t border-gray-100">
+              <div className="space-y-6 pt-8 border-t border-white/10">
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">Who it's for</h4>
-                  <p className="text-gray-900 font-medium">{capability.who}</p>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-brand-accent mb-2">Who it's for</h4>
+                  <p className="text-white font-medium">{capability.who}</p>
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">Outcome</h4>
-                  <p className="text-gray-900 font-medium">{capability.outcome}</p>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-brand-accent mb-2">Outcome</h4>
+                  <p className="text-white font-medium">{capability.outcome}</p>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        <div className="bg-gray-50 rounded-3xl p-12 md:p-20 text-center border border-gray-100">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-12 md:p-20 text-center shadow-2xl relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">Ready to Build?</h2>
           <p className="text-xl text-gray-500 mb-12 max-w-2xl mx-auto">
             Tell us about your project and let's see how we can help you build something extraordinary.
