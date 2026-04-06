@@ -4,59 +4,59 @@ import { motion } from "motion/react";
 
 const testimonials: Testimonial[] = [
   {
-    text: "MVPXLAB revolutionized our operations, streamlining finance and inventory. The cloud-based platform keeps us productive, even remotely.",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&h=150&auto=format&fit=crop",
-    name: "Briana Patton",
-    role: "Operations Manager",
+    text: "MVPXLAB didn't just build our app; they architected a scalable system that handled our first 50k users without a hitch.",
+    image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=150&h=150&auto=format&fit=crop",
+    name: "Sarah Chen",
+    role: "CTO of NexaFlow",
   },
   {
-    text: "Implementing this system was smooth and quick. The customizable, user-friendly interface made team training effortless.",
+    text: "Their AI-first approach transformed our manual underwriting process into an automated powerhouse. A true venture partner.",
+    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=150&h=150&auto=format&fit=crop",
+    name: "James Wilson",
+    role: "Founder of PayLogic",
+  },
+  {
+    text: "Speed and quality are often at odds, but the XLAB team delivered our corporate MVP in 6 weeks with production-grade code.",
+    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=150&h=150&auto=format&fit=crop",
+    name: "Elena Rodriguez",
+    role: "Product Lead at Velo",
+  },
+  {
+    text: "We've worked with many agencies, but MVPXLAB is the only one that truly understands systems thinking at scale.",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&h=150&auto=format&fit=crop",
-    name: "Bilal Ahmed",
-    role: "IT Manager",
+    name: "Marcus Thorne",
+    role: "CEO of QuantCore",
   },
   {
-    text: "The support team is exceptional, guiding us through setup and providing ongoing assistance, ensuring our satisfaction.",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&h=150&auto=format&fit=crop",
-    name: "Saman Malik",
-    role: "Customer Support Lead",
-  },
-  {
-    text: "MVPXLAB's seamless integration enhanced our business operations and efficiency. Highly recommend for its intuitive interface.",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&h=150&auto=format&fit=crop",
-    name: "Omar Raza",
-    role: "CEO",
-  },
-  {
-    text: "Its robust features and quick support have transformed our workflow, making us significantly more efficient.",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150&h=150&auto=format&fit=crop",
-    name: "Zainab Hussain",
-    role: "Project Manager",
-  },
-  {
-    text: "The smooth implementation exceeded expectations. It streamlined processes, improving overall business performance.",
-    image: "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=150&h=150&auto=format&fit=crop",
-    name: "Aliza Khan",
-    role: "Business Analyst",
-  },
-  {
-    text: "Our business functions improved with a user-friendly design and positive customer feedback.",
+    text: "The ROI on our collaboration was immediate. Their technical depth in LLMs gave us a year's head start on competitors.",
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&h=150&auto=format&fit=crop",
-    name: "Farhan Siddiqui",
-    role: "Marketing Director",
+    name: "David Park",
+    role: "Head of AI at Synapse",
   },
   {
-    text: "They delivered a solution that exceeded expectations, understanding our needs and enhancing our operations.",
+    text: "Rapid prototyping at its finest. They validated our riskiest assumptions in days, rather than months of guesswork.",
     image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&h=150&auto=format&fit=crop",
-    name: "Sana Sheikh",
-    role: "Sales Manager",
+    name: "Chloe Adams",
+    role: "Venture Director",
   },
   {
-    text: "Using this platform, our online presence and conversions significantly improved, boosting business performance.",
+    text: "The integration between our legacy systems and the new AI modules was seamless. Precision engineering at its best.",
     image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&h=150&auto=format&fit=crop",
     name: "Hassan Ali",
-    role: "E-commerce Manager",
+    role: "Founding Engineer",
   },
+  {
+    text: "They operate like a co-founder team. They challenges our ideas and refine them into something much better.",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&h=150&auto=format&fit=crop",
+    name: "Saman Malik",
+    role: "Strategy Director",
+  },
+  {
+    text: "From MVP to scaling globally, MVPXLAB has been our most reliable partner throughout the journey.",
+    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=150&h=150&auto=format&fit=crop",
+    name: "Omar Raza",
+    role: "Managing Director",
+  }
 ];
 
 const firstColumn = testimonials.slice(0, 3);
