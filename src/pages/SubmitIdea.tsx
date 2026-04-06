@@ -90,23 +90,23 @@ export default function SubmitIdea() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="py-24 md:py-32"
+      className="py-16 md:py-32 bg-inherit min-h-screen"
     >
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tighter leading-tight mb-6">
+        <div className="mb-10 md:mb-16">
+          <h1 className="text-3xl md:text-6xl font-bold tracking-tighter leading-tight mb-4 md:mb-6">
             Tell Us What You <br />
             <span className="text-gray-400">Want to Build</span>
           </h1>
-          <p className="text-xl text-gray-500 leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-500 leading-relaxed">
             Quickly share your idea and we'll get right back to you.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 md:space-y-8 bg-white/5 backdrop-blur-xl p-6 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <div className="space-y-2">
-              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Full Name</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Full Name</label>
               <input
                 {...register("fullName")}
                 className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
@@ -115,7 +115,7 @@ export default function SubmitIdea() {
               {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Email Address</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Email Address</label>
               <input
                 {...register("email")}
                 className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
@@ -126,7 +126,7 @@ export default function SubmitIdea() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-bold uppercase tracking-wider text-gray-400">What are you building?</label>
+            <label className="text-xs font-bold uppercase tracking-wider text-gray-400">What are you building?</label>
             <textarea
               {...register("ideaDescription")}
               rows={5}
@@ -137,7 +137,7 @@ export default function SubmitIdea() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Pitch Deck / Link (Optional)</label>
+            <label className="text-xs font-bold uppercase tracking-wider text-gray-400">Pitch Deck / Link (Optional)</label>
             <input
               {...register("pitchDeckUrl")}
               className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
@@ -151,7 +151,7 @@ export default function SubmitIdea() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-brand-accent text-white px-8 py-5 rounded-2xl text-xl font-bold hover:bg-brand-accent-dark transition-all flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed group"
+            className="w-full bg-brand-accent text-white px-8 py-4 md:py-5 rounded-2xl text-lg md:text-xl font-bold hover:bg-brand-accent-dark transition-all flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed group"
           >
             {isSubmitting ? (
               <Loader2 className="animate-spin mr-2" size={24} />

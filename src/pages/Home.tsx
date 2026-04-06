@@ -329,29 +329,29 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-40 bg-inherit">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-40 bg-inherit px-4">
+        <div className="max-w-7xl mx-auto">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-brand-accent/20 to-brand-accent-dark/20 rounded-[4rem] p-16 md:p-32 text-center text-white relative overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(253,151,6,0.1)]"
+            className="bg-gradient-to-br from-brand-accent/20 to-brand-accent-dark/20 rounded-[3rem] md:rounded-[4rem] p-10 md:p-32 text-center text-white relative overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(253,151,6,0.1)]"
           >
             <div className="absolute top-0 right-0 w-96 h-96 bg-brand-accent/15 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 animate-pulse"></div>
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 animate-pulse"></div>
 
             <div className="relative z-10">
-              <h2 className="text-5xl md:text-8xl font-bold tracking-tighter mb-10 leading-none">Tell Us What You <br /> Want to Build</h2>
-              <p className="text-2xl text-gray-400 mb-16 max-w-2xl mx-auto font-medium">
+              <h2 className="text-3xl md:text-8xl font-bold tracking-tighter mb-6 md:mb-10 leading-tight md:leading-none">Tell Us What You <br /> Want to Build</h2>
+              <p className="text-lg md:text-2xl text-gray-400 mb-10 md:mb-16 max-w-2xl mx-auto font-medium">
                 Ready to transform your vision into a scalable digital system? Let's start the conversation today.
               </p>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
                   to="/submit-idea"
-                  className="inline-flex bg-white text-black px-16 py-8 rounded-[2rem] text-2xl font-bold hover:shadow-2xl hover:shadow-white/20 transition-all group"
+                  className="inline-flex bg-white text-black px-10 md:px-16 py-6 md:py-8 rounded-[1.5rem] md:rounded-[2rem] text-xl md:text-2xl font-bold hover:shadow-2xl hover:shadow-white/20 transition-all group"
                 >
                   Submit Your Idea
-                  <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform text-brand-accent" size={32} />
+                  <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform text-brand-accent" size={24} />
                 </Link>
               </motion.div>
             </div>
