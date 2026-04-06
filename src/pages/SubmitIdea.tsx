@@ -2,61 +2,8 @@ import { motion } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { auth, db } from '../firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useState } from 'react';
 import { CheckCircle, Send, Loader2 } from 'lucide-react';
-
-enum OperationType {
-  CREATE = 'create',
-  UPDATE = 'update',
-  DELETE = 'delete',
-  LIST = 'list',
-  GET = 'get',
-  WRITE = 'write',
-}
-
-interface FirestoreErrorInfo {
-  error: string;
-  operationType: OperationType;
-  path: string | null;
-  authInfo: {
-    userId: string | undefined;
-    email: string | null | undefined;
-    emailVerified: boolean | undefined;
-    isAnonymous: boolean | undefined;
-    tenantId: string | null | undefined;
-    providerInfo: {
-      providerId: string;
-      displayName: string | null;
-      email: string | null;
-      photoUrl: string | null;
-    }[];
-  }
-}
-
-function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
-  const errInfo: FirestoreErrorInfo = {
-    error: error instanceof Error ? error.message : String(error),
-    authInfo: {
-      userId: auth.currentUser?.uid,
-      email: auth.currentUser?.email,
-      emailVerified: auth.currentUser?.emailVerified,
-      isAnonymous: auth.currentUser?.isAnonymous,
-      tenantId: auth.currentUser?.tenantId,
-      providerInfo: auth.currentUser?.providerData.map(provider => ({
-        providerId: provider.providerId,
-        displayName: provider.displayName,
-        email: provider.email,
-        photoUrl: provider.photoURL
-      })) || []
-    },
-    operationType,
-    path
-  }
-  console.error('Firestore Error: ', JSON.stringify(errInfo));
-  return errInfo.error;
-}
 
 const submissionSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -79,17 +26,8 @@ export default function SubmitIdea() {
   const onSubmit = async (data: SubmissionData) => {
     setIsSubmitting(true);
     setError(null);
-    const path = 'submissions';
     try {
-      // 1. Save to Firestore (as a backup/log)
-      await addDoc(collection(db, path), {
-        ...data,
-        status: 'pending',
-        createdAt: serverTimestamp(),
-      });
-
-      // 2. Send to Email via Formspree (Straight to their email)
-      // Note: You will need to verify your email at formspree.io once you receive the first submission
+      // Send to Email via Formspree (Straight to mvplabx@gmail.com)
       const response = await fetch("https://formspree.io/f/mvplabx@gmail.com", {
         method: "POST",
         headers: {
@@ -108,13 +46,12 @@ export default function SubmitIdea() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to send email, but idea was saved to database.");
+        throw new Error("The submission server is temporarily unavailable. Please email us directly at mvplabx@gmail.com");
       }
 
       setIsSubmitted(true);
     } catch (err) {
-      const errorMessage = handleFirestoreError(err, OperationType.WRITE, path);
-      setError(errorMessage || "An unexpected error occurred while submitting.");
+      setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -206,7 +143,7 @@ export default function SubmitIdea() {
             {errors.pitchDeckUrl && <p className="text-red-500 text-xs mt-1">{errors.pitchDeckUrl.message}</p>}
           </div>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
 
           <button
             type="submit"
@@ -225,6 +162,5 @@ export default function SubmitIdea() {
         </form>
       </div>
     </motion.div>
-
   );
 }

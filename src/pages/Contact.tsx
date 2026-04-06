@@ -1,8 +1,6 @@
 import { motion } from 'motion/react';
 import React, { useState } from 'react';
 import { Mail, Globe, MapPin, Send, Loader2, CheckCircle, ExternalLink } from 'lucide-react';
-import { db } from '../firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export default function Contact() {
   const [name, setName] = useState('');
@@ -10,24 +8,16 @@ export default function Contact() {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
     try {
-      // 1. Save directly to Firestore for logging
-      await addDoc(collection(db, 'contacts'), {
-        name,
-        email,
-        message,
-        createdAt: serverTimestamp(),
-        status: 'pending'
-      });
-
-      // 2. Send to Email via Formspree
-      // Note: You will need to verify your email at formspree.io once you receive the first submission
-      await fetch("https://formspree.io/f/mvplabx@gmail.com", {
+      // Send to Email via Formspree (Straight to mvplabx@gmail.com)
+      const response = await fetch("https://formspree.io/f/mvplabx@gmail.com", {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -45,16 +35,16 @@ export default function Contact() {
         })
       });
 
+      if (!response.ok) {
+        throw new Error("Temporary mail server issue. Please try again or email us directly at mvplabx@gmail.com");
+      }
+
       setIsSubmitted(true);
       setName('');
       setEmail('');
       setMessage('');
     } catch (error) {
-      console.error("Error saving contact message:", error);
-      // Fallback: Build a mailto link
-      const subject = encodeURIComponent(`Message from ${name} via MVPXLAB Contact Form`);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-      window.location.href = `mailto:mvplabx@gmail.com?subject=${subject}&body=${body}`;
+      setError(error instanceof Error ? error.message : "An unexpected error occurred.");
     } finally {
       setIsSubmitting(false);
     }
@@ -137,7 +127,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Response time */}
             <div className="mt-8 p-6 rounded-2xl bg-white/5 border border-white/10">
               <p className="text-sm text-gray-400 leading-relaxed">
                 <span className="text-brand-accent font-bold">⚡ Fast Response:</span> We typically reply within 24–48 hours on business days. For urgent inquiries, email us directly.
@@ -202,6 +191,9 @@ export default function Contact() {
                     placeholder="Tell us about your project..."
                   />
                 </div>
+
+                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+
                 <button
                   type="submit"
                   disabled={isSubmitting}
