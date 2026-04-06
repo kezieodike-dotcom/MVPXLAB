@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -9,6 +10,16 @@ import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 
 import { Menu, X } from 'lucide-react';
+
+/* Cinematic Background Blobs Component */
+function AmbientBackground() {
+  return (
+    <div className="bg-blobs">
+      <div className="blob blob-orange" />
+      <div className="blob blob-purple" />
+    </div>
+  );
+}
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -45,12 +56,14 @@ function Navbar() {
           <NavLink to="/about" className={navLinkClass}>About</NavLink>
           <NavLink to="/what-we-build" className={navLinkClass}>What We Build</NavLink>
           <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
-          <NavLink
-            to="/submit-idea"
-            className="bg-brand-accent text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-brand-accent-dark transition-all transform hover:scale-105"
-          >
-            Submit Idea
-          </NavLink>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <NavLink
+              to="/submit-idea"
+              className="bg-brand-accent text-white text-sm font-bold px-6 py-3 rounded-xl hover:bg-brand-accent-dark transition-colors shadow-[0_0_20px_rgba(253,151,6,0.3)]"
+            >
+              Submit Idea
+            </NavLink>
+          </motion.div>
         </div>
 
         {/* Mobile Toggle */}
@@ -63,23 +76,33 @@ function Navbar() {
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-black z-40 transition-transform duration-500 ease-in-out md:hidden ${isOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-        <div className="flex flex-col h-full justify-center px-10 space-y-2">
-          <NavLink to="/" end className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>Home</NavLink>
-          <NavLink to="/about" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>About</NavLink>
-          <NavLink to="/what-we-build" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>What We Build</NavLink>
-          <NavLink to="/contact" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>Contact</NavLink>
-          <div className="pt-8">
-            <NavLink
-              to="/submit-idea"
-              className="block w-full bg-brand-accent text-white text-center py-5 rounded-2xl text-xl font-bold"
-              onClick={() => setIsOpen(false)}
-            >
-              Submit Your Idea
-            </NavLink>
-          </div>
-        </div>
-      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ y: '-100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '-100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 bg-black z-40 md:hidden overflow-hidden"
+          >
+            <div className="flex flex-col h-full justify-center px-10 space-y-2">
+              <NavLink to="/" end className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>Home</NavLink>
+              <NavLink to="/about" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>About</NavLink>
+              <NavLink to="/what-we-build" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>What We Build</NavLink>
+              <NavLink to="/contact" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>Contact</NavLink>
+              <div className="pt-8">
+                <NavLink
+                  to="/submit-idea"
+                  className="block w-full bg-brand-accent text-white text-center py-5 rounded-2xl text-xl font-bold"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Submit Your Idea
+                </NavLink>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
@@ -87,7 +110,7 @@ function Navbar() {
 function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="bg-black border-t border-white/5">
+    <footer className="bg-black border-t border-white/5 relative z-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
@@ -145,6 +168,19 @@ function Footer() {
   );
 }
 
+function PageTransition({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -153,24 +189,35 @@ function ScrollToTop() {
   return null;
 }
 
+function AppContent() {
+  const location = useLocation();
+
+  return (
+    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+      <AmbientBackground />
+      <Navbar />
+      <main className="relative z-10">
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+            <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+            <Route path="/what-we-build" element={<PageTransition><WhatWeBuild /></PageTransition>} />
+            <Route path="/submit-idea" element={<PageTransition><SubmitIdea /></PageTransition>} />
+            <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+            <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+          </Routes>
+        </AnimatePresence>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="min-h-screen bg-black text-white">
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/what-we-build" element={<WhatWeBuild />} />
-            <Route path="/submit-idea" element={<SubmitIdea />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <AppContent />
     </Router>
   );
 }
