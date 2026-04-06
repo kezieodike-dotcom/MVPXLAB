@@ -16,11 +16,7 @@ service cloud.firestore {
       return data.fullName is string && data.fullName.size() > 0 && data.fullName.size() < 100 &&
              data.email is string && data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") &&
              data.ideaDescription is string && data.ideaDescription.size() > 0 && data.ideaDescription.size() < 5000 &&
-             data.problemSolved is string && data.problemSolved.size() > 0 && data.problemSolved.size() < 2000 &&
-             data.targetAudience is string && data.targetAudience.size() > 0 && data.targetAudience.size() < 1000 &&
-             data.needs in ["MVP", "Full product", "AI integration", "Not sure"] &&
-             data.projectStage in ["Idea stage", "Early prototype", "Existing product"] &&
-             (!('budget' in data) || data.budget in ["Just exploring", "Ready to build", "Funded project"]) &&
+             (!('pitchDeckUrl' in data) || data.pitchDeckUrl is string) &&
              data.status == 'pending';
     }
 

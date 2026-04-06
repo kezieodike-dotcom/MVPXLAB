@@ -66,6 +66,10 @@
     animation: marquee 35s linear infinite;
   }
 
+  .animate-marquee-slow {
+    animation: marquee 70s linear infinite;
+  }
+
   @keyframes marquee {
     0% {
       transform: translateX(0);

@@ -61,13 +61,7 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
 const submissionSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
   email: z.string().email("Invalid email address"),
-  company: z.string().optional(),
-  ideaDescription: z.string().min(20, "Please provide a more detailed description (min 20 characters)"),
-  problemSolved: z.string().min(10, "Please describe the problem this solves"),
-  targetAudience: z.string().min(5, "Please describe the target audience"),
-  needs: z.enum(["MVP", "Full product", "AI integration", "Not sure"]),
-  projectStage: z.enum(["Idea stage", "Early prototype", "Existing product"]),
-  budget: z.enum(["Just exploring", "Ready to build", "Funded project"]).optional(),
+  ideaDescription: z.string().min(10, "Please provide a description of your idea (min 10 characters)"),
   pitchDeckUrl: z.string().url("Must be a valid URL").optional().or(z.literal('')),
 });
 
@@ -87,11 +81,36 @@ export default function SubmitIdea() {
     setError(null);
     const path = 'submissions';
     try {
+      // 1. Save to Firestore (as a backup/log)
       await addDoc(collection(db, path), {
         ...data,
         status: 'pending',
         createdAt: serverTimestamp(),
       });
+
+      // 2. Send to Email via Formspree (Straight to their email)
+      // Note: You will need to verify your email at formspree.io once you receive the first submission
+      const response = await fetch("https://formspree.io/f/mvplabx@gmail.com", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          subject: `New Idea Submission from ${data.fullName}`,
+          message: `
+            Name: ${data.fullName}
+            Email: ${data.email}
+            Idea: ${data.ideaDescription}
+            Pitch Deck URL: ${data.pitchDeckUrl || "None Provided"}
+          `
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send email, but idea was saved to database.");
+      }
+
       setIsSubmitted(true);
     } catch (err) {
       const errorMessage = handleFirestoreError(err, OperationType.WRITE, path);
@@ -111,9 +130,9 @@ export default function SubmitIdea() {
         <div className="w-20 h-20 bg-brand-accent text-white rounded-full flex items-center justify-center mx-auto mb-8">
           <CheckCircle size={40} />
         </div>
-        <h1 className="text-4xl font-bold mb-6">Idea Submitted Successfully</h1>
+        <h1 className="text-4xl font-bold mb-6">Idea Received!</h1>
         <p className="text-xl text-gray-500 mb-10">
-          Thank you for sharing your vision with us. Our team will review your submission and get back to you within 48–72 hours.
+          Thank you for sharing your vision. We've received your submission in our email and our team will get back to you within 48–72 hours.
         </p>
         <button
           onClick={() => setIsSubmitted(false)}
@@ -140,135 +159,52 @@ export default function SubmitIdea() {
             <span className="text-gray-400">Want to Build</span>
           </h1>
           <p className="text-xl text-gray-500 leading-relaxed">
-            Be clear. Be bold. We’re here to build with you.
+            Quickly share your idea and we'll get right back to you.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-12 bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative">
-          {/* Basic Info */}
-          <section className="space-y-8">
-            <h2 className="text-2xl font-bold border-b border-white/10 pb-4">Basic Info</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Full Name</label>
-                <input
-                  {...register("fullName")}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
-                  placeholder="John Doe"
-                />
-                {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Email</label>
-                <input
-                  {...register("email")}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
-                  placeholder="john@example.com"
-                />
-                {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
-              </div>
-            </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 bg-white/5 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Company (Optional)</label>
+              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Full Name</label>
               <input
-                {...register("company")}
+                {...register("fullName")}
                 className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
-                placeholder="Acme Corp"
+                placeholder="John Doe"
               />
-            </div>
-          </section>
-
-          {/* Idea Details */}
-          <section className="space-y-8">
-            <h2 className="text-2xl font-bold border-b border-white/10 pb-4">Idea Details</h2>
-            <div className="space-y-2">
-              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">What do you want to build?</label>
-              <textarea
-                {...register("ideaDescription")}
-                rows={5}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
-                placeholder="Describe your vision in detail..."
-              />
-              {errors.ideaDescription && <p className="text-red-500 text-xs mt-1">{errors.ideaDescription.message}</p>}
+              {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">What problem does it solve?</label>
-              <textarea
-                {...register("problemSolved")}
-                rows={3}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
-                placeholder="What pain point are you addressing?"
-              />
-              {errors.problemSolved && <p className="text-red-500 text-xs mt-1">{errors.problemSolved.message}</p>}
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Who is it for?</label>
+              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Email Address</label>
               <input
-                {...register("targetAudience")}
+                {...register("email")}
                 className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
-                placeholder="Target audience or user base"
+                placeholder="john@example.com"
               />
-              {errors.targetAudience && <p className="text-red-500 text-xs mt-1">{errors.targetAudience.message}</p>}
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">What do you need help with?</label>
-              <select
-                {...register("needs")}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600 appearance-none"
-              >
-                <option value="MVP" className="bg-neutral-900 text-white">MVP Development</option>
-                <option value="Full product" className="bg-neutral-900 text-white">Full Product Build</option>
-                <option value="AI integration" className="bg-neutral-900 text-white">AI Integration</option>
-                <option value="Not sure" className="bg-neutral-900 text-white">Not Sure Yet</option>
-              </select>
-              {errors.needs && <p className="text-red-500 text-xs mt-1">{errors.needs.message}</p>}
-            </div>
-          </section>
+          </div>
 
-          {/* Project Stage & Budget */}
-          <section className="space-y-8">
-            <h2 className="text-2xl font-bold border-b border-white/10 pb-4">Project Context</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Project Stage</label>
-                <select
-                  {...register("projectStage")}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600 appearance-none"
-                >
-                  <option value="Idea stage" className="bg-neutral-900 text-white">Idea Stage</option>
-                  <option value="Early prototype" className="bg-neutral-900 text-white">Early Prototype</option>
-                  <option value="Existing product" className="bg-neutral-900 text-white">Existing Product</option>
-                </select>
-                {errors.projectStage && <p className="text-red-500 text-xs mt-1">{errors.projectStage.message}</p>}
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Budget / Commitment</label>
-                <select
-                  {...register("budget")}
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600 appearance-none"
-                >
-                  <option value="Just exploring" className="bg-neutral-900 text-white">Just Exploring</option>
-                  <option value="Ready to build" className="bg-neutral-900 text-white">Ready to Build</option>
-                  <option value="Funded project" className="bg-neutral-900 text-white">Funded Project</option>
-                </select>
-              </div>
-            </div>
-          </section>
+          <div className="space-y-2">
+            <label className="text-sm font-bold uppercase tracking-wider text-gray-400">What are you building?</label>
+            <textarea
+              {...register("ideaDescription")}
+              rows={5}
+              className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
+              placeholder="Describe your vision in a few sentences..."
+            />
+            {errors.ideaDescription && <p className="text-red-500 text-xs mt-1">{errors.ideaDescription.message}</p>}
+          </div>
 
-          {/* File Upload (Pitch Deck) */}
-          <section className="space-y-8">
-            <h2 className="text-2xl font-bold border-b border-white/10 pb-4">Additional Materials</h2>
-            <div className="space-y-2">
-              <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Pitch Deck Link (Optional)</label>
-              <input
-                {...register("pitchDeckUrl")}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
-                placeholder="Google Drive, Dropbox, Notion, or Figma link"
-              />
-              <p className="text-xs text-gray-500 mt-1">If you have a slide deck or extensive document, paste the public link here.</p>
-              {errors.pitchDeckUrl && <p className="text-red-500 text-xs mt-1">{errors.pitchDeckUrl.message}</p>}
-            </div>
-          </section>
+          <div className="space-y-2">
+            <label className="text-sm font-bold uppercase tracking-wider text-gray-400">Pitch Deck / Link (Optional)</label>
+            <input
+              {...register("pitchDeckUrl")}
+              className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-accent transition-all outline-none text-white placeholder:text-gray-600"
+              placeholder="Drive, Dropbox, Notion, etc."
+            />
+            {errors.pitchDeckUrl && <p className="text-red-500 text-xs mt-1">{errors.pitchDeckUrl.message}</p>}
+          </div>
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
@@ -289,5 +225,6 @@ export default function SubmitIdea() {
         </form>
       </div>
     </motion.div>
+
   );
 }

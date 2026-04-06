@@ -38,15 +38,15 @@ export default function About() {
               Our mission is to empower founders and organizations with the technical expertise and strategic partnership needed to transform bold ideas into real-world impact.
             </p>
           </div>
-          <div className="bg-white/5 backdrop-blur-xl p-12 rounded-3xl border border-white/10 shadow-2xl">
-            <h3 className="text-2xl font-bold mb-8 text-white">Why We Exist</h3>
-            <ul className="space-y-6">
+          <div className="bg-white/5 backdrop-blur-xl p-6 md:p-12 rounded-3xl border border-white/10 shadow-2xl">
+            <h3 className="text-xl md:text-2xl font-bold mb-6 md:mb-8 text-white">Why We Exist</h3>
+            <ul className="space-y-4 md:space-y-6">
               {values.map((value, index) => (
                 <li key={index} className="flex items-start space-x-4">
-                  <CheckCircle className="text-brand-accent shrink-0 mt-1" size={20} />
+                  <CheckCircle className="text-brand-accent shrink-0 mt-1" size={18} />
                   <div>
-                    <h4 className="font-bold mb-1 text-white">{value.title}</h4>
-                    <p className="text-gray-400 text-sm">{value.description}</p>
+                    <h4 className="font-bold text-sm md:text-base mb-1 text-white">{value.title}</h4>
+                    <p className="text-gray-400 text-[11px] md:text-sm">{value.description}</p>
                   </div>
                 </li>
               ))}
@@ -80,7 +80,7 @@ export default function About() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-brand-accent/20 to-brand-accent-dark/20 p-12 md:p-24 rounded-3xl text-center border border-white/10 relative overflow-hidden group">
+        <div className="bg-gradient-to-br from-brand-accent/20 to-brand-accent-dark/20 p-8 md:p-24 rounded-3xl text-center border border-white/10 relative overflow-hidden group">
           <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
           <h2 className="text-4xl font-bold tracking-tight mb-8 italic text-white">"We are not freelancers. We are your product and systems partner."</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">

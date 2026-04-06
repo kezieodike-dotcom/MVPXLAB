@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ArrowRight, Zap, Cpu, Layers, BarChart, ChevronRight, Check, Sparkles, Code, Globe, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { clsx, type ClassValue } from 'clsx';
@@ -34,6 +35,13 @@ const StardustBackground = () => (
   </div>
 );
 
+
+const processSteps = [
+  { step: "01", title: "Submit your idea", desc: "Tell us what you want to build and why it matters." },
+  { step: "02", title: "Review & Validate", desc: "Our team analyzes the feasibility and market potential." },
+  { step: "03", title: "Design & Build", desc: "Rapid prototyping and development of your core product." },
+  { step: "04", title: "Scale Together", desc: "Continuous optimization and growth as your partner." }
+];
 
 const TechMarquee = () => {
   const items = [
@@ -166,7 +174,13 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Mobile horizontal carousel */}
+          <div className="md:hidden">
+            <CapabilitiesCarousel features={features} />
+          </div>
+
+          {/* Desktop grid */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {features.map((feature, index) => (
               <FeatureCard
                 key={index}
@@ -182,20 +196,21 @@ export default function Home() {
       </section>
 
       {/* Process Section */}
-      <section className="py-32 bg-white/5">
+      <section className="py-32 bg-white/5 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-24">
+          <div className="text-center mb-16 md:mb-24">
             <h2 className="text-4xl md:text-5xl font-bold tracking-tighter mb-6 text-white">The XLAB Process</h2>
             <p className="text-xl text-gray-500 max-w-2xl mx-auto">A streamlined methodology designed for speed, quality, and long-term success.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { step: "01", title: "Submit your idea", desc: "Tell us what you want to build and why it matters." },
-              { step: "02", title: "Review & Validate", desc: "Our team analyzes the feasibility and market potential." },
-              { step: "03", title: "Design & Build", desc: "Rapid prototyping and development of your core product." },
-              { step: "04", title: "Scale Together", desc: "Continuous optimization and growth as your partner." }
-            ].map((item, index) => (
+          {/* ── Mobile horizontal carousel ── */}
+          <div className="md:hidden">
+            <ProcessCarousel />
+          </div>
+
+          {/* ── Desktop grid ── */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {processSteps.map((item, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -290,7 +305,7 @@ const FeatureCard = ({ icon: Icon, title, description, image, index }: any) => (
       customSize
       className="h-full flex flex-col border-white/5 bg-white/5 hover:bg-white/[0.07] transition-all duration-500 group overflow-hidden"
     >
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-32 md:h-48 overflow-hidden">
         <img
           src={image}
           alt={title}
@@ -299,19 +314,88 @@ const FeatureCard = ({ icon: Icon, title, description, image, index }: any) => (
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
         <div className="absolute bottom-4 left-6">
-          <div className="w-12 h-12 rounded-xl bg-brand-accent/20 backdrop-blur-md flex items-center justify-center text-brand-accent group-hover:bg-brand-accent group-hover:text-white transition-colors duration-500">
-            <Icon size={24} />
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-brand-accent/20 backdrop-blur-md flex items-center justify-center text-brand-accent group-hover:bg-brand-accent group-hover:text-white transition-colors duration-500">
+            <Icon size={index === 0 ? 20 : 24} />
           </div>
         </div>
       </div>
 
-      <div className="p-6 flex-1 flex flex-col relative z-10">
-        <h3 className="text-xl font-bold mb-3 tracking-tight text-white">{title}</h3>
-        <p className="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{description}</p>
-        <Link to="/what-we-build" className="flex items-center w-fit text-brand-accent text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors cursor-pointer">
-          Learn More <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+      <div className="p-3 md:p-6 flex-1 flex flex-col relative z-10">
+        <h3 className="text-base md:text-xl font-bold mb-2 tracking-tight text-white">{title}</h3>
+        <p className="text-gray-500 text-[11px] md:text-sm leading-relaxed mb-4 flex-1">{description}</p>
+        <Link to="/what-we-build" className="flex items-center w-fit text-brand-accent text-[10px] md:text-xs font-bold uppercase tracking-widest group-hover:text-white transition-colors cursor-pointer">
+          Learn More <ArrowRight size={12} className="ml-1 md:ml-2 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
     </GlowCard>
   </motion.div>
 );
+
+const ProcessCarousel = () => {
+  // Duplicate steps for infinite motion
+  const doubledSteps = [...processSteps, ...processSteps];
+
+  return (
+    <div className="relative overflow-hidden py-4 -mx-4 group">
+      {/* Linear Continuous Motion Container */}
+      <div className="flex animate-marquee-slow hover:[animation-play-state:paused] active:[animation-play-state:paused] gap-6 w-fit px-4">
+        {doubledSteps.map((item, index) => (
+          <div key={index} className="flex-none w-[75vw] lg:w-full">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <GlowCard
+                glowColor="blue"
+                customSize
+                className="h-full p-6 border-white/5 bg-white/5"
+              >
+                <div className="relative z-10">
+                  <div className="text-4xl md:text-6xl font-bold text-white/5 mb-3 select-none">
+                    {item.step}
+                  </div>
+                  <h3 className="text-sm md:text-xl font-bold mb-2 tracking-tight text-white">{item.title}</h3>
+                  <p className="text-gray-500 leading-relaxed text-[10px] md:text-sm">{item.desc}</p>
+                </div>
+              </GlowCard>
+            </motion.div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Side gradients */}
+      <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+    </div>
+  );
+};
+
+const CapabilitiesCarousel = ({ features }: { features: any[] }) => {
+  // Duplicate features to create an infinite loop effect
+  const doubledFeatures = [...features, ...features];
+
+  return (
+    <div className="relative overflow-hidden py-4 -mx-4 group">
+      {/* Linear Continuous Motion Container */}
+      <div className="flex animate-marquee hover:[animation-play-state:paused] active:[animation-play-state:paused] gap-4 w-fit px-4">
+        {doubledFeatures.map((feature, index) => (
+          <div key={index} className="flex-none w-[60vw]">
+            <FeatureCard
+              icon={feature.icon}
+              title={feature.title}
+              description={feature.description}
+              image={feature.image}
+              index={index % features.length}
+            />
+          </div>
+        ))}
+      </div>
+      
+      {/* Side gradients to fade cards in/out smoothly */}
+      <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+    </div>
+  );
+};

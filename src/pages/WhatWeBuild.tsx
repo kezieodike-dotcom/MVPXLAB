@@ -61,22 +61,22 @@ export default function WhatWeBuild() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white/5 backdrop-blur-xl border border-white/10 p-12 rounded-3xl shadow-2xl hover:bg-white/10 hover:border-brand-accent/50 hover:shadow-brand-accent/20 transition-all duration-500"
+              className="bg-white/5 backdrop-blur-xl border border-white/10 p-6 md:p-12 rounded-3xl shadow-2xl hover:bg-white/10 hover:border-brand-accent/50 hover:shadow-brand-accent/20 transition-all duration-500"
             >
-              <div className="w-16 h-16 bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center mb-8">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center mb-6 md:mb-8">
                 {capability.icon}
               </div>
-              <h2 className="text-3xl font-bold mb-4">{capability.title}</h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">{capability.description}</p>
+              <h2 className="text-xl md:text-3xl font-bold mb-3 md:mb-4">{capability.title}</h2>
+              <p className="text-gray-500 text-sm md:text-lg leading-relaxed mb-6 md:mb-8">{capability.description}</p>
               
-              <div className="space-y-6 pt-8 border-t border-white/10">
+              <div className="space-y-4 md:space-y-6 pt-6 md:pt-8 border-t border-white/10">
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-brand-accent mb-2">Who it's for</h4>
-                  <p className="text-white font-medium">{capability.who}</p>
+                  <h4 className="text-[10px] md:text-sm font-bold uppercase tracking-wider text-brand-accent mb-1 md:mb-2">Who it's for</h4>
+                  <p className="text-white text-xs md:text-base font-medium">{capability.who}</p>
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-brand-accent mb-2">Outcome</h4>
-                  <p className="text-white font-medium">{capability.outcome}</p>
+                  <h4 className="text-[10px] md:text-sm font-bold uppercase tracking-wider text-brand-accent mb-1 md:mb-2">Outcome</h4>
+                  <p className="text-white text-xs md:text-base font-medium">{capability.outcome}</p>
                 </div>
               </div>
             </motion.div>
