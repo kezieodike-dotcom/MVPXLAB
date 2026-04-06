@@ -16,7 +16,7 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      // Save directly to Firestore 
+      // 1. Save directly to Firestore for logging
       await addDoc(collection(db, 'contacts'), {
         name,
         email,
@@ -25,20 +25,36 @@ export default function Contact() {
         status: 'pending'
       });
 
+      // 2. Send to Email via Formspree
+      // Note: You will need to verify your email at formspree.io once you receive the first submission
+      await fetch("https://formspree.io/f/mvplabx@gmail.com", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          subject: `Contact Form: New Message from ${name}`,
+          message: `
+            Name: ${name}
+            Email: ${email}
+            
+            Message:
+            ${message}
+          `
+        })
+      });
+
       setIsSubmitted(true);
       setName('');
       setEmail('');
       setMessage('');
     } catch (error) {
       console.error("Error saving contact message:", error);
-      // Fallback: Build a mailto link that opens the user's email client
+      // Fallback: Build a mailto link
       const subject = encodeURIComponent(`Message from ${name} via MVPXLAB Contact Form`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-      );
-      const mailtoUrl = `mailto:mvplabx@gmail.com?subject=${subject}&body=${body}`;
-      
-      window.location.href = mailtoUrl;
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+      window.location.href = `mailto:mvplabx@gmail.com?subject=${subject}&body=${body}`;
     } finally {
       setIsSubmitting(false);
     }
