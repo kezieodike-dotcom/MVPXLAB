@@ -36,15 +36,18 @@ export default function Contact() {
       });
 
       if (!response.ok) {
-        throw new Error("Temporary mail server issue. Please try again or email us directly at mvplabx@gmail.com");
+        const errorData = await response.json().catch(() => ({}));
+        const messageStr = errorData.error || errorData.message || `Status ${response.status}: ${response.statusText}`;
+        throw new Error(`Formspree Error: ${messageStr}. If this is a new form, please check your email for an activation link.`);
       }
 
       setIsSubmitted(true);
       setName('');
       setEmail('');
       setMessage('');
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "An unexpected error occurred.");
+    } catch (err) {
+      console.error("Contact form error:", err);
+      setError(err instanceof Error ? err.message : "An unexpected error occurred.");
     } finally {
       setIsSubmitting(false);
     }
@@ -56,11 +59,11 @@ export default function Contact() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="py-24 md:py-32"
+      className="py-24 md:py-32 bg-inherit min-h-screen"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-24">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-8">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight mb-8 text-white">
             Get in <br />
             <span className="text-gray-400">Touch</span>
           </h1>

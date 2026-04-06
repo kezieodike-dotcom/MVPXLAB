@@ -46,11 +46,14 @@ export default function SubmitIdea() {
       });
 
       if (!response.ok) {
-        throw new Error("The submission server is temporarily unavailable. Please email us directly at mvplabx@gmail.com");
+        const errorData = await response.json().catch(() => ({}));
+        const message = errorData.error || errorData.message || `Status ${response.status}: ${response.statusText}`;
+        throw new Error(`Formspree Error: ${message}. If this is a new form, please check your email to activate it!`);
       }
 
       setIsSubmitted(true);
     } catch (err) {
+      console.error("Submission error:", err);
       setError(err instanceof Error ? err.message : "An unexpected error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
