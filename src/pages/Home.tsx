@@ -13,7 +13,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const StardustBackground = () => (
-  <div className="absolute inset-0 -z-10 overflow-hidden bg-black">
+  <div className="absolute inset-0 -z-10 overflow-hidden bg-inherit">
     {/* Animated Radial Gradients */}
     <div className="absolute top-[-40%] left-[-20%] w-[100%] h-[100%] bg-brand-accent/15 rounded-full blur-[150px] animate-pulse"></div>
     <div className="absolute bottom-[-40%] right-[-20%] w-[100%] h-[100%] bg-brand-accent-dark/15 rounded-full blur-[150px] animate-pulse delay-700"></div>
@@ -185,7 +185,7 @@ export default function Home() {
       </section>
 
       {/* Capabilities Section */}
-      <section className="py-40 bg-black relative">
+      <section className="py-40 bg-inherit relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
             <motion.div 
@@ -306,7 +306,7 @@ export default function Home() {
       <Testimonials />
 
       {/* Vision Statement */}
-      <section className="py-40 bg-black text-white overflow-hidden relative">
+      <section className="py-40 bg-inherit text-white overflow-hidden relative">
         <div className="absolute top-0 left-0 w-full h-full opacity-30 pointer-events-none">
           <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-brand-accent rounded-full blur-[180px]"></div>
         </div>
@@ -332,7 +332,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-40 bg-black">
+      <section className="py-40 bg-inherit">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
@@ -428,8 +428,6 @@ const ProcessCarousel = () => {
           </div>
         ))}
       </div>
-      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black via-black/50 to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black via-black/50 to-transparent z-10 pointer-events-none"></div>
     </div>
   );
 };
@@ -451,8 +449,6 @@ const CapabilitiesCarousel = ({ features }: { features: any[] }) => {
           </div>
         ))}
       </div>
-      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black via-black/50 to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black via-black/50 to-transparent z-10 pointer-events-none"></div>
     </div>
   );
 };

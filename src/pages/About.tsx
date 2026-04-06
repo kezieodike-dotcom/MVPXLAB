@@ -15,7 +15,7 @@ export default function About() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="py-24 md:py-32 bg-black min-h-screen"
+      className="py-24 md:py-32 bg-inherit min-h-screen"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-24">

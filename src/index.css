@@ -9,7 +9,7 @@
 
 @layer base {
   body {
-    @apply bg-black text-white antialiased;
+    @apply bg-[#0a0a0a] text-white antialiased;
   }
 
   /* Custom Scrollbar */
@@ -17,7 +17,7 @@
     width: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: #000;
+    background: #0a0a0a;
   }
   ::-webkit-scrollbar-thumb {
     background: #333;
