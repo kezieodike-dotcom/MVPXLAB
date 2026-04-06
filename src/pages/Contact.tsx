@@ -17,7 +17,7 @@ export default function Contact() {
 
     try {
       // Send to Email via Formspree (Straight to mvplabx@gmail.com)
-      const response = await fetch("https://formspree.io/f/mvplabx@gmail.com", {
+      const response = await fetch("https://formspree.io/f/mqegnazg", {
         method: "POST",
         headers: {
           "Accept": "application/json",
