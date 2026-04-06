@@ -21,9 +21,6 @@ const StardustBackground = () => (
     {/* Focal Point Glow */}
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-brand-accent/10 rounded-full blur-[200px]"></div>
 
-    {/* Central Perspective Line */}
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-full bg-gradient-to-b from-brand-accent/30 via-brand-accent/10 to-transparent"></div>
-
     {/* Moving Particles Overlay */}
     <div className="absolute inset-0 stardust opacity-40 animate-slow-pan"></div>
 
