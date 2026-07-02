@@ -1,10 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import Home from './pages/Home';
 import About from './pages/About';
 import WhatWeBuild from './pages/WhatWeBuild';
+import Team from './pages/Team';
 import SubmitIdea from './pages/SubmitIdea';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
@@ -55,6 +57,7 @@ function Navbar() {
           <NavLink to="/" end className={navLinkClass}>Home</NavLink>
           <NavLink to="/about" className={navLinkClass}>About</NavLink>
           <NavLink to="/what-we-build" className={navLinkClass}>What We Build</NavLink>
+          <NavLink to="/team" className={navLinkClass}>Team</NavLink>
           <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <NavLink
@@ -89,6 +92,7 @@ function Navbar() {
               <NavLink to="/" end className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>Home</NavLink>
               <NavLink to="/about" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>About</NavLink>
               <NavLink to="/what-we-build" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>What We Build</NavLink>
+              <NavLink to="/team" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>Team</NavLink>
               <NavLink to="/contact" className={mobileNavLinkClass} onClick={() => setIsOpen(false)}>Contact</NavLink>
               <div className="pt-8">
                 <NavLink
@@ -131,6 +135,7 @@ function Footer() {
               <li><NavLink to="/" end className="text-gray-500 hover:text-white transition-colors">Home</NavLink></li>
               <li><NavLink to="/about" className="text-gray-500 hover:text-white transition-colors">About</NavLink></li>
               <li><NavLink to="/what-we-build" className="text-gray-500 hover:text-white transition-colors">What We Build</NavLink></li>
+              <li><NavLink to="/team" className="text-gray-500 hover:text-white transition-colors">Team</NavLink></li>
               <li><NavLink to="/contact" className="text-gray-500 hover:text-white transition-colors">Contact</NavLink></li>
               <li><NavLink to="/submit-idea" className="text-brand-accent hover:text-brand-accent-dark transition-colors font-bold">Submit Idea →</NavLink></li>
             </ul>
@@ -168,7 +173,7 @@ function Footer() {
   );
 }
 
-function PageTransition({ children }: { children: React.ReactNode }) {
+function PageTransition({ children }: { children: ReactNode }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -198,10 +203,11 @@ function AppContent() {
       <Navbar />
       <main className="relative z-10">
         <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
+          <Routes location={location}>
             <Route path="/" element={<PageTransition><Home /></PageTransition>} />
             <Route path="/about" element={<PageTransition><About /></PageTransition>} />
             <Route path="/what-we-build" element={<PageTransition><WhatWeBuild /></PageTransition>} />
+            <Route path="/team" element={<PageTransition><Team /></PageTransition>} />
             <Route path="/submit-idea" element={<PageTransition><SubmitIdea /></PageTransition>} />
             <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
             <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
